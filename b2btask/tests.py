@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
+from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
@@ -60,10 +61,62 @@ class B2btaskTestCase(TestCase):
         wallet = Wallet.objects.get(id=wallet.id)
         assert wallet.balance == 15 + 5
 
+    def test_create_wallet(self):
+        """Созаем новый Wallet."""
+        amount_of_wallets = Wallet.objects.count()
+
+        resp = self.client.post("/wallets/", {"label": "label"})
+        assert resp.status_code == status.HTTP_201_CREATED
+
+        new_amount_of_wallets = Wallet.objects.count()
+
+        assert new_amount_of_wallets == amount_of_wallets + 1
+
     def test_get_all_wallets(self):
+        """Получаем список всех Wallet."""
         resp = self.client.get("/wallets/")
+        assert resp.status_code == status.HTTP_200_OK
 
         res = resp.json()["results"]
         amount_of_wallets = Wallet.objects.count()
         assert amount_of_wallets > 0
         assert len(res) == amount_of_wallets
+
+    def test_get_one_wallet(self):
+        """Получаем один Wallet."""
+        wallet_id = 1
+        resp = self.client.get(f"/wallets/{wallet_id}/")
+        assert resp.status_code == status.HTTP_200_OK
+
+        res = resp.json()
+        assert type(res) is dict
+        assert res["label"] == f"test_wallet_{wallet_id}"
+
+    def test_update_one_wallet(self):
+        """Обновляем один Wallet."""
+        wallet_id = 1
+        wallet = Wallet.objects.get(id=wallet_id)
+        wallet_balance = wallet.balance
+
+        resp = self.client.patch(
+            f"/wallets/{wallet_id}/", {"balance": wallet_balance + 1}
+        )
+        assert resp.status_code == status.HTTP_200_OK
+
+        res = resp.json()
+        assert type(res) is dict
+        assert res["label"] == f"test_wallet_{wallet_id}"
+
+        wallet = Wallet.objects.get(id=wallet_id)
+        assert wallet.balance == wallet_balance + 1
+
+    def test_delete_one_wallet(self):
+        """Удаляем один Wallet."""
+        amount_of_wallets = Wallet.objects.count()
+
+        wallet_id = 1
+        resp = self.client.delete(f"/wallets/{wallet_id}/")
+        assert resp.status_code == status.HTTP_204_NO_CONTENT
+
+        new_amount_of_wallets = Wallet.objects.count()
+        assert new_amount_of_wallets == amount_of_wallets - 1
