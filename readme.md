@@ -49,7 +49,7 @@ python manage.py test
 
 ## how to test API manually:
 
-### 1 step - get token:
+### 1 step - run sever:
 
 ```bash
 python manage.py runserver
