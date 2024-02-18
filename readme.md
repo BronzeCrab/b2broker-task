@@ -44,3 +44,28 @@ python manage.py runserver
 ```bash
 python manage.py test
 ```
+
+## how to test API manually:
+
+### 1 step - get token:
+
+```bash
+python manage.py runserver
+```
+
+then:
+
+### 2 step - copy token:
+```bash
+curl --data "password=user_0&username=user_0" http://localhost:8000/api-token-auth/
+```
+
+Copy token and paste it into `check_api.py` script in the root of the project.
+
+then:
+
+### 3 step - run script for test:
+
+```bash
+python check_api.py
+```

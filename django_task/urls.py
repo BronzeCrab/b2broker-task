@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
+from rest_framework.authtoken import views as auth_views
 
 from b2btask import views
 
@@ -30,4 +31,5 @@ router.register(r"transactions", views.TransactionViewSet)
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
+    path("api-token-auth/", auth_views.obtain_auth_token),
 ]

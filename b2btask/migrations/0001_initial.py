@@ -2,6 +2,7 @@
 
 import django.db.models.deletion
 from django.db import migrations, models
+from django.contrib.auth.models import User
 
 
 def forwards_func(apps, schema_editor):
@@ -18,6 +19,10 @@ def forwards_func(apps, schema_editor):
             balance += j
         wallet.balance = balance
         wallet.save()
+
+    user = User.objects.create(username="user_0", is_staff=True)
+    user.set_password("user_0")
+    user.save()
 
 
 def reverse_func(apps, schema_editor):
