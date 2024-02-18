@@ -120,3 +120,67 @@ class B2btaskTestCase(TestCase):
 
         new_amount_of_wallets = Wallet.objects.count()
         assert new_amount_of_wallets == amount_of_wallets - 1
+
+    def test_create_transaction(self):
+        """Созаем новый Transaction."""
+        amount_of_transactions = Transaction.objects.count()
+
+        resp = self.client.post("/transactions/", {"txid": "txid", "amount": 1})
+        assert resp.status_code == status.HTTP_201_CREATED
+
+        new_amount_of_transactions = Transaction.objects.count()
+
+        assert new_amount_of_transactions == amount_of_transactions + 1
+
+    def test_get_all_transaction(self):
+        """Получаем список всех Transaction."""
+        resp = self.client.get("/transactions/")
+        assert resp.status_code == status.HTTP_200_OK
+
+        res = resp.json()["count"]
+
+        amount_of_transactions = Transaction.objects.count()
+        assert amount_of_transactions > 0
+        assert res == amount_of_transactions
+
+    def test_get_one_transaction(self):
+        """Получаем один Transaction."""
+        tr_id = 1
+        resp = self.client.get(f"/transactions/{tr_id}/")
+        assert resp.status_code == status.HTTP_200_OK
+
+        res = resp.json()
+        assert type(res) is dict
+        tr = Transaction.objects.get(id=tr_id)
+        wallet_id = tr.wallet.id
+        assert res["txid"] == f"test_transaction_{tr_id}_wallet_{wallet_id}"
+
+    def test_update_one_transaction(self):
+        """Обновляем один Transaction."""
+        tr_id = 1
+        transaction = Transaction.objects.get(id=tr_id)
+        transaction_amount = transaction.amount
+
+        resp = self.client.patch(
+            f"/transactions/{tr_id}/", {"amount": transaction_amount + 1}
+        )
+        assert resp.status_code == status.HTTP_200_OK
+
+        res = resp.json()
+        assert type(res) is dict
+        wallet_id = transaction.wallet.id
+        assert res["txid"] == f"test_transaction_{tr_id}_wallet_{wallet_id}"
+
+        transaction = Transaction.objects.get(id=tr_id)
+        assert transaction.amount == transaction_amount + 1
+
+    def test_delete_one_transaction(self):
+        """Удаляем один Transaction."""
+        amount_of_tr = Transaction.objects.count()
+
+        tr_id = 1
+        resp = self.client.delete(f"/transactions/{tr_id}/")
+        assert resp.status_code == status.HTTP_204_NO_CONTENT
+
+        new_amount_of_tr = Transaction.objects.count()
+        assert new_amount_of_tr == amount_of_tr - 1

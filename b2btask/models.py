@@ -20,5 +20,8 @@ class Transaction(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        self.wallet.balance = sum(tr.amount for tr in self.wallet.transaction_set.all())
-        self.wallet.save()
+        if self.wallet:
+            self.wallet.balance = sum(
+                tr.amount for tr in self.wallet.transaction_set.all()
+            )
+            self.wallet.save()
