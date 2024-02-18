@@ -1,6 +1,6 @@
 import requests
 
-headers = {"Authorization": "Token 1243af14e14e0772d3d987c3f9cffbd6802002ab"}
+headers = {"Authorization": "Token 57e3c4dcf70d06a50a3e696737060f4518cf514f"}
 base = "http://localhost:8000"
 
 url = base + "/wallets/"

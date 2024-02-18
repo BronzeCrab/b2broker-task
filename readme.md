@@ -34,6 +34,8 @@ Create some superusers:
 python manage.py createsuperuser
 ```
 
+Go check some admin of this app (go to `/admin`)
+
 Run the project:
 ```bash
 python manage.py runserver
@@ -55,7 +57,7 @@ python manage.py runserver
 
 then:
 
-### 2 step - copy token:
+### 2 step - make http request to create token, then copy token:
 ```bash
 curl --data "password=user_0&username=user_0" http://localhost:8000/api-token-auth/
 ```
