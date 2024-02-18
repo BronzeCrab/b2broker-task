@@ -42,5 +42,5 @@ python manage.py runserver
 ## how to run tests:
 
 ```bash
-python manage.py 
+python manage.py test
 ```

@@ -16,3 +16,8 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"Transaction_{self.txid}_id={self.id}"
+
+    def save(self, *args, **kwargs):
+        self.wallet.balance += self.amount
+        self.wallet.save()
+        super().save(*args, **kwargs)
