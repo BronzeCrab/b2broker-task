@@ -1,8 +1,8 @@
-# what is this:
+## what is this:
 
 This is django, djangorestframework related task
 
-# how to run it:
+## how to run it:
 
 Create venv using whatever method you want, example:
 ```bash
@@ -37,4 +37,10 @@ python manage.py createsuperuser
 Run the project:
 ```bash
 python manage.py runserver
+```
+
+## how to run tests:
+
+```bash
+python manage.py 
 ```
