@@ -18,6 +18,7 @@ class Transaction(models.Model):
         return f"Transaction_{self.txid}_id={self.id}"
 
     def save(self, *args, **kwargs):
-        self.wallet.balance += self.amount
-        self.wallet.save()
         super().save(*args, **kwargs)
+
+        self.wallet.balance = sum(tr.amount for tr in self.wallet.transaction_set.all())
+        self.wallet.save()
