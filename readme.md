@@ -60,7 +60,7 @@ then:
 curl --data "password=user_0&username=user_0" http://localhost:8000/api-token-auth/
 ```
 
-Copy token and paste it into `check_api.py` script in the root of the project.
+Copy that obtained token and paste it into `check_api.py` script in the root of the project.
 
 then:
 
