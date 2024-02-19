@@ -19,7 +19,7 @@ Rename `.env_example` to `.env` and fill it with some values:
 mv ./.env_example ./.env
 ```
 
-Install some dependecies:
+Install some dependencies:
 ```bash
 pip install -r requirements.txt
 ```
